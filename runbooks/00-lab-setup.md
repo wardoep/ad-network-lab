@@ -20,14 +20,25 @@
 
 Domain: `corp.lab` · Subnet: `10.0.10.0/24` · DNS for all lab machines: `10.0.10.5`
 
+## VM specs
+
+| VM | vCPU | RAM | Disk (dynamic) | Notes |
+|---|---|---|---|---|
+| DC01 | 2 | 4096 MB | 60 GB | Server 2022, Desktop Experience |
+| CLIENT01 | 2 | 4096 MB | 80 GB | Win11 needs EFI + TPM 2.0 + Secure Boot — auto-set when OS type is Windows 11 |
+| pfSense (milestone 8) | 1 | 1024 MB | 8 GB | two adapters: WAN=NAT, LAN=`ADLAB` |
+
+Host budget: ~8 GB free RAM with both Windows VMs running, ~60 GB free disk (dynamic disks only consume what's written). If RAM is tight, 3072 MB each is workable; don't go lower on the DC.
+
 ## Steps
 
-1. **Create the lab network.** VirtualBox → Tools → Network → NAT Networks → Create:
+1. **Create the lab network.** VirtualBox → File → Tools → Network Manager → NAT Networks → Create:
    - Name: `ADLAB`, IPv4 prefix: `10.0.10.0/24`
-   - **Disable VirtualBox's built-in DHCP** — DC01 will be the DHCP server. (Until milestone 1 is done, CLIENT01 simply won't get a lease; that's expected.)
-2. **Create DC01:** Windows 2022 (64-bit), 2 vCPU, 4096 MB RAM, 60 GB dynamically-allocated disk, network adapter attached to NAT Network `ADLAB`.
-3. **Create CLIENT01:** Windows 11 (64-bit), 2 vCPU, 4096 MB RAM, 60 GB disk, adapter on `ADLAB`. If the host lacks a TPM, enable VirtualBox's TPM 2.0 emulation in the VM settings (Win11 requires it).
-4. **Snapshot discipline:** take a snapshot named `pre-<milestone>` before starting every milestone. A broken lab you can roll back is a lab you'll actually experiment on.
+   - **Untick "Enable DHCP"** — DC01 will be the DHCP server; two DHCP servers on one subnet is a classic outage. (Until milestone 1 is done, CLIENT01 simply won't get a lease; that's expected.)
+2. **Create DC01** (Machine → New): attach the Server 2022 ISO, **tick "Skip Unattended Installation"** (VirtualBox 7 otherwise installs Windows for you — doing it manually is the point), specs per the table, then Settings → Network → Adapter 1 → NAT Network `ADLAB` before first boot. During Windows setup pick the **Desktop Experience** edition.
+3. **Create CLIENT01:** same flow with the Win11 ISO (OS type *Windows 11 (64-bit)* makes VirtualBox enable EFI/TPM/Secure Boot automatically), adapter on `ADLAB`. The lab has no internet gateway until milestone 8, so at setup's network screen use `Shift+F10` → `oobe\bypassnro` to allow a local account (see runbook 03).
+4. **After each OS install:** Devices → Insert Guest Additions CD → run installer (clipboard, display, time sync).
+5. **Snapshot discipline:** take a snapshot named `pre-<milestone>` before starting every milestone. A broken lab you can roll back is a lab you'll actually experiment on.
 
 ## Verify
 
