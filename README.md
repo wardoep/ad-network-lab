@@ -6,6 +6,8 @@ A Windows domain and segmented network I am building and operating in VirtualBox
 
 This lab exists to practice the core of enterprise IT support: a Windows Server domain controller, a domain-joined client, group-based access control, Group Policy, delegated helpdesk rights, PowerShell user provisioning, and a pfSense firewall segmenting the lab network. Every milestone is a runbook in [`runbooks/`](runbooks/), written so the lab can be rebuilt from scratch by following them. Deliberate break/fix drills — and their diagnoses — are logged in [`runbooks/09-break-fix-log.md`](runbooks/09-break-fix-log.md).
 
+The runbooks are the *how*; **[TAKEAWAYS.md](TAKEAWAYS.md) is the *why*** — what each milestone builds, why real organizations work this way, and the transferable idea behind it.
+
 ## Topology
 
 ```
