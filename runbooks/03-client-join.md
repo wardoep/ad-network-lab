@@ -5,7 +5,7 @@
 ## Steps
 
 1. **Install Windows 11 Enterprise** on CLIENT01. Local account, name the machine `CLIENT01` during setup (or rename after).
-   - Tip for the eval ISO: if setup demands a Microsoft account, disconnect the network during OOBE or use `Shift+F10` → `oobe\bypassnro`.
+   - Tip for the eval ISO: when setup demands internet/a Microsoft account, press `Shift+F10` → `start ms-cxh:localonly` — a local-account dialog opens directly. (`oobe\bypassnro` is removed from current Win11 builds; the registry fallback is `reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE /v BypassNRO /t REG_DWORD /d 1 /f` then reboot.)
 2. **Check networking** (should be automatic via DC01's DHCP):
    ```powershell
    ipconfig /all        # IP in 10.0.10.100–199, DNS = 10.0.10.5, domain suffix corp.lab

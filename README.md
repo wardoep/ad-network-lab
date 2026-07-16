@@ -34,8 +34,8 @@ The runbooks are the *how*; **[TAKEAWAYS.md](TAKEAWAYS.md) is the *why*** — wh
 
 | # | Runbook | Status |
 |---|---------|--------|
-| 0 | [Lab setup — VMs, network, ISOs](runbooks/00-lab-setup.md) | ☐ |
-| 1 | [Build the domain controller](runbooks/01-domain-controller.md) | ☐ |
+| 0 | [Lab setup — VMs, network, ISOs](runbooks/00-lab-setup.md) | ✅ 2026-07-16 |
+| 1 | [Build the domain controller](runbooks/01-domain-controller.md) | ✅ 2026-07-16 |
 | 2 | [OUs, users, and groups](runbooks/02-ous-users-groups.md) | ☐ |
 | 3 | [Join the client to the domain](runbooks/03-client-join.md) | ☐ |
 | 4 | [Group Policy](runbooks/04-group-policy.md) | ☐ |

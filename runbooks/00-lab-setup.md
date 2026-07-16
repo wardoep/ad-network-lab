@@ -36,7 +36,7 @@ Host budget: ~8 GB free RAM with both Windows VMs running, ~60 GB free disk (dyn
    - Name: `ADLAB`, IPv4 prefix: `10.0.10.0/24`
    - **Untick "Enable DHCP"** — DC01 will be the DHCP server; two DHCP servers on one subnet is a classic outage. (Until milestone 1 is done, CLIENT01 simply won't get a lease; that's expected.)
 2. **Create DC01** (Machine → New): attach the Server 2022 ISO, **tick "Skip Unattended Installation"** (VirtualBox 7 otherwise installs Windows for you — doing it manually is the point), specs per the table, then Settings → Network → Adapter 1 → NAT Network `ADLAB` before first boot. During Windows setup pick the **Desktop Experience** edition.
-3. **Create CLIENT01:** same flow with the Win11 ISO (OS type *Windows 11 (64-bit)* makes VirtualBox enable EFI/TPM/Secure Boot automatically), adapter on `ADLAB`. The lab has no internet gateway until milestone 8, so at setup's network screen use `Shift+F10` → `oobe\bypassnro` to allow a local account (see runbook 03).
+3. **Create CLIENT01:** same flow with the Win11 ISO (OS type *Windows 11 (64-bit)* makes VirtualBox enable EFI/TPM/Secure Boot automatically), adapter on `ADLAB`. The lab has no internet gateway until milestone 8, so at setup's network screen use `Shift+F10` → `start ms-cxh:localonly`, which pops a local-account dialog directly. (The old `oobe\bypassnro` trick is removed from current Win11 builds — verified the hard way on the 2026 eval ISO; see runbook 03.)
 4. **After each OS install:** Devices → Insert Guest Additions CD → run installer (clipboard, display, time sync).
 5. **Snapshot discipline:** take a snapshot named `pre-<milestone>` before starting every milestone. A broken lab you can roll back is a lab you'll actually experiment on.
 
@@ -52,4 +52,9 @@ Host budget: ~8 GB free RAM with both Windows VMs running, ~60 GB free disk (dyn
 
 ## What I learned
 
-_(fill in after completing this milestone)_
+*Completed 2026-07-16.*
+
+- **Ctrl+Alt+Del never reaches a VM** — the host OS intercepts it at a level VirtualBox can't grab. The substitute is Host key + Del (Right Ctrl + Delete, *without* Alt), or Input → Keyboard → Insert Ctrl-Alt-Del. I lost ten minutes to this because I kept adding Alt out of habit.
+- **Setup guides rot.** The runbook originally said `oobe\bypassnro` for the Win11 local-account bypass; Microsoft removed it from current builds, and `start ms-cxh:localonly` is the working replacement. Lesson: when a documented trick fails, check whether the vendor killed it before assuming I did it wrong — and then fix the doc.
+- **Defaults are silent.** I forgot to move DC01's adapter to the `ADLAB` NAT network before installing, so it sat on VirtualBox's default NAT the whole time. Nothing errored — the install even activated itself thanks to the accidental internet — but the machine was quietly on the wrong network. Now I check Settings → Network before first boot, every VM.
+- **Terminology precision matters:** a VM is a machine you virtualize anywhere; a VPS is specifically a VM you *rent*. I'd been using them interchangeably, and being sloppy with the words made it harder to reason about where things should run.

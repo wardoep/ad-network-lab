@@ -48,4 +48,10 @@ Get-DhcpServerv4Scope                   # scope 10.0.10.0 active
 
 ## What I learned
 
-_(fill in after completing this milestone)_
+*Completed 2026-07-16 — DC01 running AD DS, DNS, and DHCP; CLIENT01 pulled 10.0.10.100 on `ipconfig /renew`.*
+
+- **Infrastructure gets static addresses; clients get leases.** The DC is the machine everything else must *find* — its address can't move. This one rule explains most of the milestone's ordering.
+- **Active Directory stands on DNS.** The DC points DNS at itself (`127.0.0.1`) because clients locate the login service by *asking DNS*, not by magic. I now understand why "can't reach the domain" tickets are usually DNS tickets in disguise.
+- **Eval activation reads as just "Activated."** I expected a visible countdown and briefly thought something was wrong; the timer is there but you have to ask for it (`slmgr /dlv`, or the desktop watermark). Verifying with the right tool beats eyeballing a settings page.
+- **DHCP must be *authorized* in AD before it serves anyone** — because a rogue DHCP server is both a classic outage and a classic attack. Security controls sometimes look like extra install steps.
+- **One digit is a different network.** I misread the client's new lease as `10.10.10.100` and briefly had a mystery; `10.10.10.x` vs `10.0.10.x` is a different subnet entirely, where nothing would reach the DC. The habit that resolved it: don't trust a glance, run `ipconfig /all` and read the IPv4, DHCP-server, and DNS lines exactly. Cheap habit, prevents expensive confusion.
