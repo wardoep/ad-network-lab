@@ -52,4 +52,9 @@ Get-ADUser jsmith -Properties MemberOf | Select-Object -ExpandProperty MemberOf
 
 ## What I learned
 
-_(fill in after completing this milestone)_
+- **OUs are for management, not tidiness.** An OU is the unit you link Group Policy to (milestone 4) and the unit you delegate admin rights over (milestone 6), so the tree has to mirror how the environment is *administered*, not just the org chart. Putting users in department OUs now is what makes those later milestones possible at all — you can't scope a GPO or a delegation to users scattered in the default `Users` container.
+- **A naming convention is infrastructure.** `jsmith` and `GG-<Dept>` aren't cosmetic — they make objects *derivable*, which is what lets a script (or another admin) find and act on them predictably. `New-LabUsers.ps1` in milestone 7 only works because a username can be computed from a person's name.
+- **Group scope is decided before any permission exists.** Department membership goes in **Global** groups (`GG-`); resource access will go in **Domain-Local** groups (`DL-`) in milestone 5. That separation *is* the AGDLP model: when someone changes departments I edit group membership, never the permissions on the share. Getting the `GG-`/`DL-` split right up front is what keeps access control maintainable later.
+- **Small defaults make it a governed directory, not a sandbox.** `-ChangePasswordAtLogon $true` and the on-by-default password-complexity policy (which is why a weak initial password is rejected) are the details that make the domain behave like a real environment.
+
+_No break/fix events this milestone — creation and verification succeeded first pass. CLIENT01 correctly does not yet appear in `Get-ADComputer` (domain join is milestone 3)._
