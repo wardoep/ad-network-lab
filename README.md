@@ -37,7 +37,7 @@ The runbooks are the *how*; **[TAKEAWAYS.md](TAKEAWAYS.md) is the *why*** — wh
 | 0 | [Lab setup — VMs, network, ISOs](runbooks/00-lab-setup.md) | ✅ 2026-07-16 |
 | 1 | [Build the domain controller](runbooks/01-domain-controller.md) | ✅ 2026-07-16 |
 | 2 | [OUs, users, and groups](runbooks/02-ous-users-groups.md) | ✅ 2026-07-20 |
-| 3 | [Join the client to the domain](runbooks/03-client-join.md) | ☐ |
+| 3 | [Join the client to the domain](runbooks/03-client-join.md) | ✅ 2026-07-21 |
 | 4 | [Group Policy](runbooks/04-group-policy.md) | ☐ |
 | 5 | [File shares with AGDLP permissions](runbooks/05-file-server-agdlp.md) | ☐ |
 | 6 | [Helpdesk delegation (RBAC)](runbooks/06-helpdesk-delegation.md) | ☐ |
