@@ -52,7 +52,7 @@ Host budget: ~8 GB free RAM with both Windows VMs running, ~60 GB free disk (dyn
 
 ## What I learned
 
-*Completed 2026-07-16.*
+*Completed.*
 
 - **Ctrl+Alt+Del never reaches a VM** — the host OS intercepts it at a level VirtualBox can't grab. The substitute is Host key + Del (Right Ctrl + Delete, *without* Alt), or Input → Keyboard → Insert Ctrl-Alt-Del. I lost ten minutes to this because I kept adding Alt out of habit.
 - **Setup guides rot.** The runbook originally said `oobe\bypassnro` for the Win11 local-account bypass; Microsoft removed it from current builds, and `start ms-cxh:localonly` is the working replacement. Lesson: when a documented trick fails, check whether the vendor killed it before assuming I did it wrong — and then fix the doc.

@@ -48,7 +48,7 @@ Get-DhcpServerv4Scope                   # scope 10.0.10.0 active
 
 ## What I learned
 
-*Completed 2026-07-16 — DC01 running AD DS, DNS, and DHCP; CLIENT01 pulled 10.0.10.100 on `ipconfig /renew`.*
+*Completed — DC01 running AD DS, DNS, and DHCP; CLIENT01 pulled 10.0.10.100 on `ipconfig /renew`.*
 
 - **Infrastructure gets static addresses; clients get leases.** The DC is the machine everything else must *find* — its address can't move. This one rule explains most of the milestone's ordering.
 - **Active Directory stands on DNS.** The DC points DNS at itself (`127.0.0.1`) because clients locate the login service by *asking DNS*, not by magic. I now understand why "can't reach the domain" tickets are usually DNS tickets in disguise.

@@ -5,7 +5,7 @@ Deliberately breaking the lab, then diagnosing it from symptoms — without peek
 ## Entry format
 
 ```
-### <date> — <title>
+### <title>
 Symptom:        what a user would report
 First checks:   what I looked at, in order, and why
 Root cause:     the actual break
@@ -28,7 +28,7 @@ Takeaway:       the reusable lesson
 
 ## Entries
 
-### 2026-07-21 — Client stranded on APIPA (169.254), couldn't find the domain
+### Client stranded on APIPA (169.254), couldn't find the domain
 Symptom:        CLIENT01 had no usable IP (`169.254.151.191`, no gateway), `ipconfig /renew` hung, `nslookup corp.lab` failed, domain join impossible.
 First checks:   read `ipconfig /all` — APIPA address = "no DHCP server answered"; `ipconfig /release` + `/renew`, the renew *hung* = broadcasting for a server that isn't replying; checked the VirtualBox Manager for DC01's power state.
 Root cause:     **DC01 was powered off.** It is the only DHCP + DNS + AD server, so one dead box took out addressing, name resolution, and the domain simultaneously.
@@ -36,7 +36,7 @@ Fix:            started DC01, waited for services to come up, `ipconfig /renew` 
 Time to fix:    ~5 min.
 Takeaway:       `169.254.x.x` (and a hanging renew) always means nothing is serving DHCP. A domain member has zero independence from its DC — which is exactly why real networks run ≥2 DCs plus DHCP failover. (Unplanned real-world version of planned drill #3.)
 
-### 2026-07-21 — Domain user "account has been disabled" at first login
+### Domain user "account has been disabled" at first login
 Symptom:        after a *successful* domain join, logging in as `CORP\jsmith` returned "Your account has been disabled, contact your system administrator."
 First checks:   noted the message itself proves the join worked (the DC authenticated far enough to report account *state*); on DC01, `Get-ADUser jsmith -Properties Enabled,PasswordLastSet` → `Enabled : False`.
 Root cause:     `jsmith` was created in milestone 2 with an initial password that failed the complexity policy; `New-ADUser` created the account but left it **disabled** (AD won't enable an account it couldn't give a valid password). It passed the earlier "does the user exist?" check but was never usable.
